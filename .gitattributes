@@ -1,0 +1,4 @@
+* text=auto
+graph_solution text eol=lf
+test.sh text eol=lf
+*.go text eol=lf
