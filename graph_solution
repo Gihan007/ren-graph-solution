@@ -1,0 +1,16 @@
+#!/bin/sh
+# Builds the Go binary on first run (cached as ./graph_solution_bin), then runs it.
+DIR="$(cd "$(dirname "$0")" && pwd)"
+BIN="$DIR/graph_solution_bin"
+if [ ! -x "$BIN" ]; then
+  # Fall back to common Go install locations if `go` isn't on PATH.
+  for d in /usr/local/go/bin "/c/Program Files/Go/bin" "$HOME/go/bin" /opt/homebrew/bin /usr/lib/go/bin; do
+    [ -d "$d" ] && PATH="$PATH:$d"
+  done
+  if ! command -v go >/dev/null 2>&1; then
+    echo "error: Go toolchain not found. Install from https://go.dev/dl/" >&2
+    exit 1
+  fi
+  (cd "$DIR" && go build -o "$BIN" .) || exit 1
+fi
+exec "$BIN" "$@"
